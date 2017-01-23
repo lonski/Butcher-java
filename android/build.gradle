@@ -18,7 +18,7 @@ android {
 
 	defaultConfig {
         applicationId "org.lonski.butcher.android"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
