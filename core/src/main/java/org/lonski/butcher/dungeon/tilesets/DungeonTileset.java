@@ -1,6 +1,6 @@
 package org.lonski.butcher.dungeon.tilesets;
 
-import org.lonski.butcher.dungeon.map.TileSymbol;
+import org.lonski.butcher.dungeon.map.DungeonMapSymbol;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,11 +18,11 @@ public class DungeonTileset implements Tileset {
 	@Override
 	public Texture getTexture(char c) {
 		switch (c) {
-		case TileSymbol.WALL:
+		case DungeonMapSymbol.WALL:
 			return WALL;
-		case TileSymbol.DOOR_CLOSED:
-		case TileSymbol.DOOR_OPEN:
-		case TileSymbol.FLOOR:
+		case DungeonMapSymbol.DOOR_CLOSED:
+		case DungeonMapSymbol.DOOR_OPEN:
+		case DungeonMapSymbol.FLOOR:
 			return FLOOR;
 		default:
 			return WALL;

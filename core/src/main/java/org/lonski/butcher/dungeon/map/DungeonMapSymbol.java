@@ -1,6 +1,6 @@
 package org.lonski.butcher.dungeon.map;
 
-public interface TileSymbol {
+public interface DungeonMapSymbol {
 	char WALL = '#';
 	char FLOOR = '.';
 	char DOOR_CLOSED = '+';
