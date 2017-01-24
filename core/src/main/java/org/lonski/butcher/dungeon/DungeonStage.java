@@ -7,7 +7,9 @@ import org.lonski.butcher.dungeon.map.DungeonMap;
 import org.lonski.butcher.dungeon.map.StandardDungeonMap;
 import org.lonski.butcher.dungeon.tilesets.DungeonTileset;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.SnapshotArray;
 
 public class DungeonStage extends Stage {
 
@@ -27,6 +29,13 @@ public class DungeonStage extends Stage {
 		objectsLayer = new Layer();
 		objectsLayer.addActor(Butcher.getPlayer());
 		addActor(objectsLayer);
+	}
+
+	/**
+	 * @return List of actors on the map: mobs, npcs, objects, player. Omits passive actors like map tiles.
+	 */
+	public SnapshotArray<Actor> getUpdateableActors() {
+		return objectsLayer.getChildren();
 	}
 
 	@Override

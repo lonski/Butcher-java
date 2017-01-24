@@ -1,20 +1,19 @@
-package org.lonski.butcher.dungeon.actors;
+package org.lonski.butcher.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Tile extends Actor{
+public class Tile extends AdaptedActor {
 
 	private final char character;
 	private final Texture texture;
 
-	public Tile(char character, Texture texture, int x, int y){
+	public Tile(char character, Texture texture, int x, int y) {
 		super();
 		this.character = character;
 		this.texture = texture;
-		setX((float)x);
-		setY((float)y);
+		setX((float) x);
+		setY((float) y);
 	}
 
 	@Override

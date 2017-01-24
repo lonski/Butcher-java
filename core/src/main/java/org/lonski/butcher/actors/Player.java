@@ -1,11 +1,10 @@
-package org.lonski.butcher.dungeon.actors;
+package org.lonski.butcher.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Player extends Actor {
+public class Player extends AdaptedActor {
 
 	private final Texture texture;
 
