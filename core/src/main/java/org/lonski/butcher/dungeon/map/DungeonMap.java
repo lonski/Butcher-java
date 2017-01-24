@@ -6,4 +6,6 @@ public interface DungeonMap {
 	int getHeight();
 
 	int getWidth();
+
+	char getTile(int x, int y);
 }

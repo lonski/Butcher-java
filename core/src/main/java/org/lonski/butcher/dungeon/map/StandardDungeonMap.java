@@ -56,8 +56,8 @@ public class StandardDungeonMap implements DungeonMap {
 		return width;
 	}
 
-	static class Params implements DungeonMapParameters {
-		Params(int horizontalRooms, int verticalRooms, int minRoomHeight, int maxRoomHeight,
+	public static class Params implements DungeonMapParameters {
+		public Params(int horizontalRooms, int verticalRooms, int minRoomHeight, int maxRoomHeight,
 				int minRoomWidth, int maxRoomWidth) {
 			this.horizontalRooms = horizontalRooms;
 			this.verticalRooms = verticalRooms;
