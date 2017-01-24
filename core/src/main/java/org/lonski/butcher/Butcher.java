@@ -42,7 +42,7 @@ public class Butcher extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		getDungeonStage().process(Gdx.graphics.getDeltaTime());
+		getDungeonStage().act(Gdx.graphics.getDeltaTime());
 
 		camera.position.set(player.getX() - TILE_SIZE / 2, player.getY() - TILE_SIZE / 2, 0);
 		batch.setProjectionMatrix(camera.combined);

@@ -40,7 +40,8 @@ public class DungeonStage extends Stage {
 		currentActor = 0;
 	}
 
-	public void process(float delta) {
+	@Override
+	public void act(float delta) {
 		AdaptedActor actor = (AdaptedActor) getUpdateableActors().get(currentActor);
 		if (actor == null) {
 			return;
