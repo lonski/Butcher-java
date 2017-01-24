@@ -1,6 +1,8 @@
 package org.lonski.butcher.dungeon;
 
 import org.lonski.butcher.Butcher;
+import org.lonski.butcher.actors.AdaptedActor;
+import org.lonski.butcher.actors.actions.AdaptedAction;
 import org.lonski.butcher.common.Layer;
 import org.lonski.butcher.dungeon.layers.MapLayer;
 import org.lonski.butcher.dungeon.map.DungeonMap;
@@ -17,10 +19,13 @@ public class DungeonStage extends Stage {
 	private Layer mapLayer;
 	private Layer objectsLayer;
 
+	private int currentActor;
+	private AdaptedAction currentAction;
+
 	public DungeonStage() {
 		super();
 
-		map = new StandardDungeonMap(80,40);
+		map = new StandardDungeonMap(80, 40);
 		map.generate(new StandardDungeonMap.Params(4, 4, 3, 8, 3, 8));
 
 		mapLayer = new MapLayer(map, new DungeonTileset());
@@ -29,12 +34,30 @@ public class DungeonStage extends Stage {
 		objectsLayer = new Layer();
 		objectsLayer.addActor(Butcher.getPlayer());
 		addActor(objectsLayer);
+
+		currentActor = 0;
+	}
+
+	public void process(float delta) {
+		AdaptedActor actor = (AdaptedActor)getUpdateableActors().get(currentActor);
+		if (actor == null) {
+			return;
+		}
+
+		if ( currentAction == null ) {
+			currentAction = actor.getNextAction();
+		}
+
+		if ( currentAction == null || currentAction.act(delta) ) {
+			currentAction = null;
+			currentActor = (currentActor + 1) % getUpdateableActors().size;
+		}
 	}
 
 	/**
-	 * @return List of actors on the map: mobs, npcs, objects, player. Omits passive actors like map tiles.
+	 * @return List of actors on the map: mobs, npcs, objects, player. Omits passive actors like
 	 */
-	public SnapshotArray<Actor> getUpdateableActors() {
+	private SnapshotArray<Actor> getUpdateableActors() {
 		return objectsLayer.getChildren();
 	}
 

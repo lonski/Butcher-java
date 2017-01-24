@@ -10,16 +10,16 @@ public class InputHandler implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
 		case Input.Keys.LEFT:
-			Butcher.getPlayer().setCurrentAction(new MoveAction(-1, 0));
+			Butcher.getPlayer().setNextAction(new MoveAction(-1, 0));
 			return true;
 		case Input.Keys.RIGHT:
-			Butcher.getPlayer().setCurrentAction(new MoveAction(1, 0));
+			Butcher.getPlayer().setNextAction(new MoveAction(1, 0));
 			return true;
 		case Input.Keys.UP:
-			Butcher.getPlayer().setCurrentAction(new MoveAction(0, 1));
+			Butcher.getPlayer().setNextAction(new MoveAction(0, 1));
 			return true;
 		case Input.Keys.DOWN:
-			Butcher.getPlayer().setCurrentAction(new MoveAction(0, -1));
+			Butcher.getPlayer().setNextAction(new MoveAction(0, -1));
 			return true;
 		default:
 			return false;

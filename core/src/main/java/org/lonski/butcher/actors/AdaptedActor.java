@@ -6,20 +6,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class AdaptedActor extends Actor {
 
-	private AdaptedAction currentAction;
+	private AdaptedAction nextAction;
 
 	public AdaptedActor() {
-		this.currentAction = null;
+		this.nextAction = null;
 	}
 
-	public void setCurrentAction(AdaptedAction currentAction) {
-		this.currentAction = currentAction;
-		this.currentAction.setActor(this);
+	public void setNextAction(AdaptedAction currentAction) {
+		this.nextAction = currentAction;
+		this.nextAction.setActor(this);
 	}
 
-	public AdaptedAction getCurrentAction() {
-		AdaptedAction tmp = currentAction;
-		currentAction = null;
+	public AdaptedAction getNextAction() {
+		AdaptedAction tmp = nextAction;
+		nextAction = null;
 		return tmp;
 	}
 }
