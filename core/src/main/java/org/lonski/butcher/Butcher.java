@@ -6,6 +6,9 @@ import org.lonski.butcher.dungeon.DungeonStage;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Butcher extends ApplicationAdapter {
 
@@ -15,11 +18,21 @@ public class Butcher extends ApplicationAdapter {
 	private static DungeonStage dungeon;
 	private static Player player;
 
+	private OrthographicCamera camera;
+	private FitViewport viewport;
+	private SpriteBatch batch;
+
 	@Override
 	public void create() {
+		batch = new SpriteBatch();
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 1024, 768);
+		viewport = new FitViewport(1024, 768, camera);
+
 		player = new Player();
 		player.setPosition(10 * TILE_SIZE, 10 * TILE_SIZE);
-		dungeon = new DungeonStage();
+
+		dungeon = new DungeonStage(viewport, batch);
 
 		Gdx.input.setInputProcessor(new InputHandler());
 	}
@@ -31,6 +44,8 @@ public class Butcher extends ApplicationAdapter {
 
 		getDungeonStage().process(Gdx.graphics.getDeltaTime());
 
+		camera.position.set(player.getX() - TILE_SIZE / 2, player.getY() - TILE_SIZE / 2, 0);
+		batch.setProjectionMatrix(camera.combined);
 		dungeon.draw();
 	}
 

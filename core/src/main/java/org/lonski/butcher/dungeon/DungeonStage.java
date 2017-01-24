@@ -9,9 +9,11 @@ import org.lonski.butcher.dungeon.map.DungeonMap;
 import org.lonski.butcher.dungeon.map.StandardDungeonMap;
 import org.lonski.butcher.dungeon.tilesets.DungeonTileset;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class DungeonStage extends Stage {
 
@@ -22,8 +24,8 @@ public class DungeonStage extends Stage {
 	private int currentActor;
 	private AdaptedAction currentAction;
 
-	public DungeonStage() {
-		super();
+	public DungeonStage(Viewport viewport, Batch batch) {
+		super(viewport, batch);
 
 		map = new StandardDungeonMap(80, 40);
 		map.generate(new StandardDungeonMap.Params(4, 4, 3, 8, 3, 8));
@@ -39,16 +41,16 @@ public class DungeonStage extends Stage {
 	}
 
 	public void process(float delta) {
-		AdaptedActor actor = (AdaptedActor)getUpdateableActors().get(currentActor);
+		AdaptedActor actor = (AdaptedActor) getUpdateableActors().get(currentActor);
 		if (actor == null) {
 			return;
 		}
 
-		if ( currentAction == null ) {
+		if (currentAction == null) {
 			currentAction = actor.getNextAction();
 		}
 
-		if ( currentAction == null || currentAction.act(delta) ) {
+		if (currentAction == null || currentAction.act(delta)) {
 			currentAction = null;
 			currentActor = (currentActor + 1) % getUpdateableActors().size;
 		}
