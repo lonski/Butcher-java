@@ -26,8 +26,8 @@ public class Butcher extends ApplicationAdapter {
 	public void create() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1024, 768);
-		viewport = new FitViewport(1024, 768, camera);
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
 		player = new Player();
 		player.setPosition(10 * TILE_SIZE, 10 * TILE_SIZE);
