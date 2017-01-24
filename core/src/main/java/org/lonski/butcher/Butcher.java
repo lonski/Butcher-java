@@ -13,14 +13,18 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 public class Butcher extends ApplicationAdapter {
 
+	public static final int TILE_SIZE = 64;
+
 	private static DungeonStage dungeon;
 	private static Player player;
 
 	@Override
 	public void create() {
 		player = new Player();
-		player.setPosition(10 * 64, 10 * 64);
+		player.setPosition(10 * TILE_SIZE, 10 * TILE_SIZE);
 		dungeon = new DungeonStage();
+
+		Gdx.input.setInputProcessor(new InputHandler());
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package org.lonski.butcher.dungeon.layers;
 
+import org.lonski.butcher.Butcher;
 import org.lonski.butcher.common.Layer;
 import org.lonski.butcher.actors.Tile;
 import org.lonski.butcher.dungeon.map.DungeonMap;
@@ -22,8 +23,7 @@ public class MapLayer extends Layer{
 		for(int x = 0; x < map.getWidth(); x++){
 			for(int y = 0; y < map.getHeight(); y++){
 				char c = map.getTile(x,y);
-				Texture texture = tileset.getTexture(c);
-				addActor(new Tile(c, texture, x * texture.getWidth(), y * texture.getHeight()));
+				addActor(new Tile(c, tileset.getTexture(c), x * Butcher.TILE_SIZE, y * Butcher.TILE_SIZE));
 			}
 		}
 	}

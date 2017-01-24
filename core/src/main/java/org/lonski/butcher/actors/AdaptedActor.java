@@ -14,6 +14,7 @@ public class AdaptedActor extends Actor {
 
 	public void setCurrentAction(AdaptedAction currentAction) {
 		this.currentAction = currentAction;
+		this.currentAction.setActor(this);
 	}
 
 	public AdaptedAction getCurrentAction() {
