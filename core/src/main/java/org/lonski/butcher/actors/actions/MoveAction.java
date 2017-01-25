@@ -22,6 +22,15 @@ public class MoveAction extends AdaptedAction {
 
 	@Override
 	public boolean act(float delta) {
-		return animatedAction.act(delta);
+		if (animatedAction.act(delta)) {
+			setStatus(ActionStatus.SUCCESS);
+		}
+
+		return getStatus() != ActionStatus.ONGOING;
+	}
+
+	@Override
+	public void perform() {
+		setStatus(ActionStatus.ONGOING);
 	}
 }

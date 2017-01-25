@@ -2,6 +2,7 @@ package org.lonski.butcher.dungeon.map;
 
 import squidpony.squidgrid.mapping.ClassicRogueMapGenerator;
 import squidpony.squidgrid.mapping.DungeonGenerator;
+import squidpony.squidmath.Coord;
 import squidpony.squidmath.RNG;
 
 public class StandardDungeonMap implements DungeonMap {
@@ -47,8 +48,19 @@ public class StandardDungeonMap implements DungeonMap {
 		return height;
 	}
 
+	@Override
 	public char getTile(int x, int y){
 		return generator.getDungeon()[x][y];
+	}
+
+	@Override
+	public char getTile(Coord coord){
+		return generator.getDungeon()[(int)coord.getX()][(int)coord.getY()];
+	}
+
+	@Override
+	public Coord getRandomFloor() {
+		return generator.utility.randomFloor(generator.getBareDungeon());
 	}
 
 	@Override

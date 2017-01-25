@@ -30,7 +30,6 @@ public class Butcher extends ApplicationAdapter {
 		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
 		player = new Player();
-		player.setPosition(10 * TILE_SIZE, 10 * TILE_SIZE);
 
 		dungeon = new DungeonStage(viewport, batch);
 
