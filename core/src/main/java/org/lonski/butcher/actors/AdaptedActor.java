@@ -1,5 +1,6 @@
 package org.lonski.butcher.actors;
 
+import org.lonski.butcher.Butcher;
 import org.lonski.butcher.actors.actions.AdaptedAction;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,7 +26,11 @@ public class AdaptedActor extends Actor {
 		return tmp;
 	}
 
-	public void setPosition(Coord coord) {
-		setPosition(coord.getX(), coord.getY());
+	public void setPositionOrtho(Coord coord) {
+		setPosition((float) coord.getX() * Butcher.TILE_SIZE, (float) coord.getY() * Butcher.TILE_SIZE);
+	}
+
+	public Coord getPositionOrtho() {
+		return Coord.get(Math.round(getX() / Butcher.TILE_SIZE), Math.round(getY() / Butcher.TILE_SIZE));
 	}
 }

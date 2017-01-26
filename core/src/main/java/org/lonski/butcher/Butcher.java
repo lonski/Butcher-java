@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Butcher extends ApplicationAdapter {
 
-	public static final int TILE_SIZE = 64;
+	public static final float TILE_SIZE = 64.f;
 	public static final float ANIMATION_DURATION = 0.15f;
 
 	private static DungeonStage dungeon;

@@ -50,7 +50,7 @@ public class DungeonStage extends Stage {
 	}
 
 	private void putPlayer() {
-		Butcher.getPlayer().setPosition(map.getRandomFloor().multiply(Butcher.TILE_SIZE));
+		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
 		objectsLayer.addActor(Butcher.getPlayer());
 	}
 

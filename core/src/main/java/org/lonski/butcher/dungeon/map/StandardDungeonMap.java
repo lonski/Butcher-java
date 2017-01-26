@@ -55,7 +55,7 @@ public class StandardDungeonMap implements DungeonMap {
 
 	@Override
 	public char getTile(Coord coord){
-		return generator.getDungeon()[(int)coord.getX()][(int)coord.getY()];
+		return generator.getDungeon()[coord.getX()][coord.getY()];
 	}
 
 	@Override

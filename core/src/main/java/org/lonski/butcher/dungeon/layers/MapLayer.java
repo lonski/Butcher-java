@@ -21,7 +21,7 @@ public class MapLayer extends Layer {
 		for (int x = 0; x < map.getWidth(); x++) {
 			for (int y = 0; y < map.getHeight(); y++) {
 				char c = map.getTile(x, y);
-				addActor(new Tile(c, tileset.getTexture(c), x * Butcher.TILE_SIZE, y * Butcher.TILE_SIZE));
+				addActor(new Tile(c, tileset.getTexture(c), (float)x * Butcher.TILE_SIZE, (float)y * Butcher.TILE_SIZE));
 			}
 		}
 	}

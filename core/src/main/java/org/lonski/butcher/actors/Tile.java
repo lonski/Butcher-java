@@ -8,12 +8,12 @@ public class Tile extends AdaptedActor {
 	private final char character;
 	private final Texture texture;
 
-	public Tile(char character, Texture texture, int x, int y) {
+	public Tile(char character, Texture texture, float x, float y) {
 		super();
 		this.character = character;
 		this.texture = texture;
-		setX((float) x);
-		setY((float) y);
+		setX(x);
+		setY(y);
 	}
 
 	@Override
