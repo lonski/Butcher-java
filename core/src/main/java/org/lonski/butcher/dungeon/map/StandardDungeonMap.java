@@ -49,18 +49,23 @@ public class StandardDungeonMap implements DungeonMap {
 	}
 
 	@Override
-	public char getTile(int x, int y){
+	public char getTileChar(int x, int y){
 		return generator.getDungeon()[x][y];
 	}
 
 	@Override
-	public char getTile(Coord coord){
+	public char getTileChar(Coord coord){
 		return generator.getDungeon()[coord.getX()][coord.getY()];
 	}
 
 	@Override
 	public Coord getRandomFloor() {
 		return generator.utility.randomFloor(generator.getBareDungeon());
+	}
+
+	@Override
+	public char[][] getGrid(){
+		return generator.getDungeon();
 	}
 
 	@Override

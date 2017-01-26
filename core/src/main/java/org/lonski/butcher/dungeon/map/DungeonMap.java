@@ -9,9 +9,11 @@ public interface DungeonMap {
 
 	int getWidth();
 
-	char getTile(int x, int y);
+	char getTileChar(int x, int y);
 
-	char getTile(Coord coord);
+	char getTileChar(Coord coord);
+
+	char[][] getGrid();
 
 	Coord getRandomFloor();
 }

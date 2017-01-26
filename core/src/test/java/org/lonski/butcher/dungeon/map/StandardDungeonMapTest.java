@@ -23,7 +23,7 @@ public class StandardDungeonMapTest {
 
 		map.generate(getParams());
 
-		assertThat(map.getTile(10,30)).isNotEqualTo(' ');
+		assertThat(map.getTileChar(10,30)).isNotEqualTo(' ');
 	}
 
 	private StandardDungeonMap.Params getParams() {

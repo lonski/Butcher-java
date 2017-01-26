@@ -10,15 +10,19 @@ public class InputHandler implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
 		case Input.Keys.LEFT:
+		case Input.Keys.A:
 			Butcher.getPlayer().setNextAction(new MoveAction(-1, 0));
 			return true;
 		case Input.Keys.RIGHT:
+		case Input.Keys.D:
 			Butcher.getPlayer().setNextAction(new MoveAction(1, 0));
 			return true;
 		case Input.Keys.UP:
+		case Input.Keys.W:
 			Butcher.getPlayer().setNextAction(new MoveAction(0, 1));
 			return true;
 		case Input.Keys.DOWN:
+		case Input.Keys.S:
 			Butcher.getPlayer().setNextAction(new MoveAction(0, -1));
 			return true;
 		default:
@@ -38,7 +42,8 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
+		System.out.println(String.format("%d %d", screenX, screenY));
+		return true;
 	}
 
 	@Override

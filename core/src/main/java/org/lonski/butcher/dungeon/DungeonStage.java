@@ -11,19 +11,26 @@ import org.lonski.butcher.dungeon.map.DungeonMapSymbol;
 import org.lonski.butcher.dungeon.map.StandardDungeonMap;
 import org.lonski.butcher.dungeon.tilesets.DungeonTileset;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import squidpony.squidgrid.FOV;
+import squidpony.squidgrid.mapping.DungeonUtility;
 import squidpony.squidmath.Coord;
 
 public class DungeonStage extends Stage {
 
 	private DungeonMap map;
-	private Layer mapLayer;
+	private MapLayer mapLayer;
 	private Layer objectsLayer;
+
+	private FOV fov;
+	private double[][] fovMap;
+	private Coord lastFovPoint;
 
 	private int currentActor;
 	private AdaptedAction currentAction;
@@ -40,14 +47,19 @@ public class DungeonStage extends Stage {
 		objectsLayer = new Layer();
 		addActor(objectsLayer);
 
+		fov = new FOV(FOV.RIPPLE_LOOSE);
+		lastFovPoint = Coord.get(0,0);
+
 		putPlayer();
 
 		currentActor = 0;
 	}
 
-	public boolean isBlocked(Coord coord){
-		return map.getTile(coord) == DungeonMapSymbol.WALL;
+	public boolean isBlocked(Coord coord) {
+		return map.getTileChar(coord) == DungeonMapSymbol.WALL;
 	}
+
+	public double getFov(Coord coord) { return fovMap[coord.getX()][coord.getY()]; }
 
 	private void putPlayer() {
 		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
@@ -68,30 +80,36 @@ public class DungeonStage extends Stage {
 		}
 
 		//No action set, wait for actor to take one
-		if (currentAction == null ) {
+		if (currentAction == null) {
 			return;
 		}
 
 		//Action is just created - perform it
-		if (currentAction.getStatus() == ActionStatus.CREATED){
+		if (currentAction.getStatus() == ActionStatus.CREATED) {
 			currentAction.perform();
 		}
 
 		//Action not performed, wait for actor to take new one
-		if(currentAction.getStatus() == ActionStatus.FAILED){
+		if (currentAction.getStatus() == ActionStatus.FAILED) {
 			return;
 		}
 
 		//Action is ongoing - tick time
-		if(currentAction.getStatus() == ActionStatus.ONGOING){
+		if (currentAction.getStatus() == ActionStatus.ONGOING) {
 			currentAction.act(delta);
 		}
 
 		//Action completed, continue to next actor
-		if (currentAction.getStatus() == ActionStatus.SUCCESS){
+		if (currentAction.getStatus() == ActionStatus.SUCCESS) {
 			currentAction = null;
 			currentActor = (currentActor + 1) % getUpdateableActors().size;
 		}
+	}
+
+	@Override
+	public void draw() {
+		calculateFov();
+		super.draw();
 	}
 
 	/**
@@ -101,8 +119,24 @@ public class DungeonStage extends Stage {
 		return objectsLayer.getChildren();
 	}
 
-	@Override
-	public void draw() {
-		super.draw();
+	private void calculateFov() {
+		Coord position = Butcher.getPlayer().getPositionOrtho();
+		if ( !position.equals(lastFovPoint) ) {
+
+			fovMap = fov.calculateFOV(DungeonUtility.generateResistances(map.getGrid()),
+					position.getX(), position.getY(), 8);
+
+			for (int x = 0; x < fovMap.length; x++) {
+				for (int y = 0; y < fovMap[0].length; y++) {
+					double fovLevel = fovMap[x][y];
+					Actor tile = mapLayer.getTile(Coord.get(x, y));
+					Color c = tile.getColor();
+					tile.setColor(c.r, c.g, c.b, (float) fovLevel);
+					tile.setVisible(fovLevel > 0.01);
+				}
+			}
+
+			lastFovPoint = position;
+		}
 	}
 }
