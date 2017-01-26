@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
  * Game loop adapter. Executes actors turns one by one.
  * Assures temporal action completion before processing next actor.
  */
-public class TurnProcessor {
+class TurnProcessor {
 
 	/**
 	 * Provides access to all actors capable of taking turns
@@ -21,16 +21,16 @@ public class TurnProcessor {
 	}
 
 	private int currentActor;
-
 	private AdaptedAction currentAction;
 	private ActorsGateway gateway;
-	public TurnProcessor(ActorsGateway gateway) {
+
+	TurnProcessor(ActorsGateway gateway) {
 		this.currentActor = 0;
 		this.currentAction = null;
 		this.gateway = gateway;
 	}
 
-	public void update(float delta) {
+	void update(float delta) {
 		Array<Actor> actors = gateway.getActors();
 
 		//Fetch actor currently taking its turn
@@ -69,17 +69,16 @@ public class TurnProcessor {
 		if (currentAction.getStatus() == ActionStatus.SUCCESS) {
 			currentAction = null;
 			currentActor = (currentActor + 1) % actors.size;
-		}
-		else if ( currentAction.getStatus() == ActionStatus.FAILED ){
+		} else if (currentAction.getStatus() == ActionStatus.FAILED) {
 			currentAction = null;
 		}
 	}
 
-	public int getCurrentActor() {
+	int getCurrentActor() {
 		return currentActor;
 	}
 
-	public AdaptedAction getCurrentAction() {
+	AdaptedAction getCurrentAction() {
 		return currentAction;
 	}
 }

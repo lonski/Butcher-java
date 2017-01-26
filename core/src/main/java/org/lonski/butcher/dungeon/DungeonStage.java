@@ -21,7 +21,6 @@ public class DungeonStage extends Stage {
 
 	private DungeonMap map;
 	private Fov fov;
-
 	private MapLayer mapLayer;
 	private Layer objectsLayer;
 

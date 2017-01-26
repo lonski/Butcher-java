@@ -49,12 +49,12 @@ public class StandardDungeonMap implements DungeonMap {
 	}
 
 	@Override
-	public char getTileChar(int x, int y){
+	public char getTileChar(int x, int y) {
 		return generator.getDungeon()[x][y];
 	}
 
 	@Override
-	public char getTileChar(Coord coord){
+	public char getTileChar(Coord coord) {
 		return generator.getDungeon()[coord.getX()][coord.getY()];
 	}
 
@@ -64,7 +64,7 @@ public class StandardDungeonMap implements DungeonMap {
 	}
 
 	@Override
-	public char[][] getGrid(){
+	public char[][] getGrid() {
 		return generator.getDungeon();
 	}
 

@@ -20,23 +20,23 @@ public class Butcher extends ApplicationAdapter {
 	public static final float TILE_SIZE = 64.f;
 	public static final float ANIMATION_DURATION = 0.15f;
 
-	private static DungeonStage dungeon;
-	private static TurnProcessor turnProcessor;
 	private static Player player;
+	private static DungeonStage dungeon;
 
 	private OrthographicCamera camera;
 	private FitViewport viewport;
 	private SpriteBatch batch;
+	private TurnProcessor turnProcessor;
 
 	@Override
 	public void create() {
-		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
 		player = new Player();
 
+		batch = new SpriteBatch();
 		dungeon = new DungeonStage(viewport, batch);
 		turnProcessor = new TurnProcessor(new TurnProcessor.ActorsGateway() {
 			@Override
@@ -57,6 +57,7 @@ public class Butcher extends ApplicationAdapter {
 
 		camera.position.set(player.getX() - TILE_SIZE / 2, player.getY() - TILE_SIZE / 2, 0);
 		batch.setProjectionMatrix(camera.combined);
+		
 		dungeon.draw();
 	}
 

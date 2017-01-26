@@ -21,10 +21,12 @@ public class Tile extends AdaptedActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		Color c = batch.getColor();
+		Color previousColor = batch.getColor();
+
 		batch.setColor(getColor());
 		batch.draw(texture, getX(), getY(), Butcher.TILE_SIZE, Butcher.TILE_SIZE);
-		batch.setColor(c.r, c.g, c.b, 1.f);
+
+		batch.setColor(previousColor);
 	}
 
 	public char getCharacter() {
