@@ -8,7 +8,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import squidpony.squidmath.Coord;
 
 public class Butcher extends ApplicationAdapter {
 
@@ -59,5 +62,19 @@ public class Butcher extends ApplicationAdapter {
 
 	public static Player getPlayer() {
 		return player;
+	}
+
+	/**
+	 * Transforms position coordinates to orthogonal map of tiles coordinate
+	 */
+	public static Coord positionToOrtho(float x, float y){
+		return Coord.get(Math.round(x / Butcher.TILE_SIZE), Math.round(y / Butcher.TILE_SIZE));
+	}
+
+	/**
+	 * Transforms orthogonal map coordinates to position in pixels.
+	 */
+	public static Vector2 orthoToPosition(Coord coord){
+		return new Vector2((float) coord.getX() * Butcher.TILE_SIZE, (float) coord.getY() * Butcher.TILE_SIZE);
 	}
 }

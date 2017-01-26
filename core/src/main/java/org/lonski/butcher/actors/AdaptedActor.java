@@ -3,6 +3,7 @@ package org.lonski.butcher.actors;
 import org.lonski.butcher.Butcher;
 import org.lonski.butcher.actors.actions.AdaptedAction;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import squidpony.squidmath.Coord;
@@ -27,10 +28,11 @@ public class AdaptedActor extends Actor {
 	}
 
 	public void setPositionOrtho(Coord coord) {
-		setPosition((float) coord.getX() * Butcher.TILE_SIZE, (float) coord.getY() * Butcher.TILE_SIZE);
+		Vector2 pos = Butcher.orthoToPosition(coord);
+		setPosition(pos.x, pos.y);
 	}
 
 	public Coord getPositionOrtho() {
-		return Coord.get(Math.round(getX() / Butcher.TILE_SIZE), Math.round(getY() / Butcher.TILE_SIZE));
+		return Butcher.positionToOrtho(getX(), getY());
 	}
 }

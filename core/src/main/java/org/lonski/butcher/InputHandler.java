@@ -42,8 +42,7 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		System.out.println(String.format("%d %d", screenX, screenY));
-		return true;
+		return false;
 	}
 
 	@Override
