@@ -1,5 +1,7 @@
 package org.lonski.butcher.actors;
 
+import org.lonski.butcher.Butcher;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,7 +23,7 @@ public class Tile extends AdaptedActor {
 	public void draw(Batch batch, float parentAlpha) {
 		Color c = batch.getColor();
 		batch.setColor(getColor());
-		batch.draw(texture, getX(), getY());
+		batch.draw(texture, getX(), getY(), Butcher.TILE_SIZE, Butcher.TILE_SIZE);
 		batch.setColor(c.r, c.g, c.b, 1.f);
 	}
 

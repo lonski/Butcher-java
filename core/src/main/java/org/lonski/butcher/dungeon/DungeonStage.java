@@ -18,19 +18,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import squidpony.squidgrid.FOV;
-import squidpony.squidgrid.mapping.DungeonUtility;
 import squidpony.squidmath.Coord;
 
 public class DungeonStage extends Stage {
 
 	private DungeonMap map;
+	private Fov fov;
+
 	private MapLayer mapLayer;
 	private Layer objectsLayer;
-
-	private FOV fov;
-	private double[][] fovMap;
-	private Coord lastFovPoint;
 
 	private int currentActor;
 	private AdaptedAction currentAction;
@@ -47,19 +43,23 @@ public class DungeonStage extends Stage {
 		objectsLayer = new Layer();
 		addActor(objectsLayer);
 
-		fov = new FOV(FOV.RIPPLE_LOOSE);
-		lastFovPoint = Coord.get(0,0);
-
 		putPlayer();
 
 		currentActor = 0;
+
+		fov = new Fov(map.getGrid(), new FovLevelApplier() {
+			@Override
+			public void apply(Coord coord, float fovLevel) {
+				Actor tile = mapLayer.getTile(coord);
+				Color c = tile.getColor();
+				tile.setColor(c.r, c.g, c.b, fovLevel);
+			}
+		});
 	}
 
 	public boolean isBlocked(Coord coord) {
 		return map.getTileChar(coord) == DungeonMapSymbol.WALL;
 	}
-
-	public double getFov(Coord coord) { return fovMap[coord.getX()][coord.getY()]; }
 
 	private void putPlayer() {
 		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
@@ -108,7 +108,7 @@ public class DungeonStage extends Stage {
 
 	@Override
 	public void draw() {
-		calculateFov();
+		fov.calculate(Butcher.getPlayer().getPositionOrtho());
 		super.draw();
 	}
 
@@ -119,24 +119,4 @@ public class DungeonStage extends Stage {
 		return objectsLayer.getChildren();
 	}
 
-	private void calculateFov() {
-		Coord position = Butcher.getPlayer().getPositionOrtho();
-		if ( !position.equals(lastFovPoint) ) {
-
-			fovMap = fov.calculateFOV(DungeonUtility.generateResistances(map.getGrid()),
-					position.getX(), position.getY(), 8);
-
-			for (int x = 0; x < fovMap.length; x++) {
-				for (int y = 0; y < fovMap[0].length; y++) {
-					double fovLevel = fovMap[x][y];
-					Actor tile = mapLayer.getTile(Coord.get(x, y));
-					Color c = tile.getColor();
-					tile.setColor(c.r, c.g, c.b, (float) fovLevel);
-					tile.setVisible(fovLevel > 0.01);
-				}
-			}
-
-			lastFovPoint = position;
-		}
-	}
 }
