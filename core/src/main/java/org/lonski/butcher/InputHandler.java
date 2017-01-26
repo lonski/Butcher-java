@@ -2,32 +2,16 @@ package org.lonski.butcher;
 
 import org.lonski.butcher.actors.actions.MoveAction;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
+import squidpony.squidmath.Coord;
 
 public class InputHandler implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
-		switch (keycode) {
-		case Input.Keys.LEFT:
-		case Input.Keys.A:
-			Butcher.getPlayer().setNextAction(new MoveAction(-1, 0));
-			return true;
-		case Input.Keys.RIGHT:
-		case Input.Keys.D:
-			Butcher.getPlayer().setNextAction(new MoveAction(1, 0));
-			return true;
-		case Input.Keys.UP:
-		case Input.Keys.W:
-			Butcher.getPlayer().setNextAction(new MoveAction(0, 1));
-			return true;
-		case Input.Keys.DOWN:
-		case Input.Keys.S:
-			Butcher.getPlayer().setNextAction(new MoveAction(0, -1));
-			return true;
-		default:
-			return false;
-		}
+		return false;
 	}
 
 	@Override
@@ -42,7 +26,12 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
+		Coord coord = screenPositionToOrtho(screenX, screenY);
+		Coord playerCoord = Butcher.getPlayer().getPositionOrtho();
+
+		Butcher.getPlayer().setNextAction(new MoveAction(coord.subtract(playerCoord)));
+
+		return true;
 	}
 
 	@Override
@@ -64,4 +53,12 @@ public class InputHandler implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
+
+	private Coord screenPositionToOrtho(int x, int y) {
+		Stage stage = Butcher.getDungeonStage();
+		Vector2 position = stage.screenToStageCoordinates(new Vector2((float) x, (float) y));
+		position.sub(Butcher.TILE_SIZE / 2.f, Butcher.TILE_SIZE / 2.f);
+		return Butcher.positionToOrtho(position);
+	}
+
 }

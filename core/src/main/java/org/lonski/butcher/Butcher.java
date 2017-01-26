@@ -71,6 +71,10 @@ public class Butcher extends ApplicationAdapter {
 		return Coord.get(Math.round(x / Butcher.TILE_SIZE), Math.round(y / Butcher.TILE_SIZE));
 	}
 
+	public static Coord positionToOrtho(Vector2 pos){
+		return positionToOrtho(pos.x, pos.y);
+	}
+
 	/**
 	 * Transforms orthogonal map coordinates to position in pixels.
 	 */

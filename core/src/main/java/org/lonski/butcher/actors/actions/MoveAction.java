@@ -13,13 +13,17 @@ public class MoveAction extends AdaptedAction {
 	private final int dx;
 	private final int dy;
 
+	public MoveAction(Coord dd) {
+		this(dd.getX(), dd.getY());
+	}
+
 	public MoveAction(int dx, int dy) {
-		this.dx = dx;
-		this.dy = dy;
+		this.dx = dx != 0 ? (dx / Math.abs(dx)) : dx;
+		this.dy = dy != 0 ? (dy / Math.abs(dy)) : dy;
 
 		animatedAction = new MoveByAction();
 		animatedAction.setDuration(Butcher.ANIMATION_DURATION);
-		animatedAction.setAmount((float) dx * Butcher.TILE_SIZE, (float) dy * Butcher.TILE_SIZE);
+		animatedAction.setAmount((float) this.dx * Butcher.TILE_SIZE, (float) this.dy * Butcher.TILE_SIZE);
 	}
 
 	@Override

@@ -91,6 +91,7 @@ public class DungeonStage extends Stage {
 
 		//Action not performed, wait for actor to take new one
 		if (currentAction.getStatus() == ActionStatus.FAILED) {
+			currentAction = null;
 			return;
 		}
 
