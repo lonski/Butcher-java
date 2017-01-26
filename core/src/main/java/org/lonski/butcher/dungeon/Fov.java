@@ -4,23 +4,23 @@ import squidpony.squidgrid.FOV;
 import squidpony.squidgrid.mapping.DungeonUtility;
 import squidpony.squidmath.Coord;
 
-/**
- * Function to be applied on given map coordinate
- * to apply tile visibility.
- */
-interface FovLevelApplier {
-	void apply(Coord coord, float fovLevel);
-}
-
 class Fov {
 
+	/**
+	 * Function to be applied on given map coordinate
+	 * to apply tile visibility.
+	 */
+	interface LevelApplier {
+		void apply(Coord coord, float fovLevel);
+	}
+
 	private final char[][] map;
-	private final FovLevelApplier fovLevelApplier;
+	private final LevelApplier fovLevelApplier;
 
 	private FOV calculator;
 	private Coord lastFovPoint;
 
-	Fov(char[][] map, FovLevelApplier fovLevelApplier) {
+	Fov(char[][] map, LevelApplier fovLevelApplier) {
 		this.map = map;
 		this.fovLevelApplier = fovLevelApplier;
 		this.calculator = new FOV(FOV.RIPPLE_LOOSE);

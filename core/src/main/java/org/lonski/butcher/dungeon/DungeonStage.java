@@ -1,9 +1,6 @@
 package org.lonski.butcher.dungeon;
 
 import org.lonski.butcher.Butcher;
-import org.lonski.butcher.actors.AdaptedActor;
-import org.lonski.butcher.actors.actions.ActionStatus;
-import org.lonski.butcher.actors.actions.AdaptedAction;
 import org.lonski.butcher.common.Layer;
 import org.lonski.butcher.dungeon.layers.MapLayer;
 import org.lonski.butcher.dungeon.map.DungeonMap;
@@ -28,83 +25,16 @@ public class DungeonStage extends Stage {
 	private MapLayer mapLayer;
 	private Layer objectsLayer;
 
-	private int currentActor;
-	private AdaptedAction currentAction;
-
 	public DungeonStage(Viewport viewport, Batch batch) {
 		super(viewport, batch);
-
-		map = new StandardDungeonMap(80, 50);
-		map.generate(new StandardDungeonMap.Params(4, 4, 3, 8, 3, 8));
-
-		mapLayer = new MapLayer(map, new DungeonTileset());
-		addActor(mapLayer);
-
-		objectsLayer = new Layer();
-		addActor(objectsLayer);
-
-		putPlayer();
-
-		currentActor = 0;
-
-		fov = new Fov(map.getGrid(), new FovLevelApplier() {
-			@Override
-			public void apply(Coord coord, float fovLevel) {
-				Actor tile = mapLayer.getTile(coord);
-				Color c = tile.getColor();
-				tile.setColor(c.r, c.g, c.b, fovLevel);
-			}
-		});
+		generateMap();
+		initializeMapView();
+		initializeObjectsView();
+		createFovCalculator();
 	}
 
 	public boolean isBlocked(Coord coord) {
 		return map.getTileChar(coord) == DungeonMapSymbol.WALL;
-	}
-
-	private void putPlayer() {
-		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
-		objectsLayer.addActor(Butcher.getPlayer());
-	}
-
-	@Override
-	public void act(float delta) {
-		//Fetch actor currently taking its turn
-		AdaptedActor actor = (AdaptedActor) getUpdateableActors().get(currentActor);
-		if (actor == null) {
-			return;
-		}
-
-		// Fetch actor's action
-		if (currentAction == null) {
-			currentAction = actor.getNextAction();
-		}
-
-		//No action set, wait for actor to take one
-		if (currentAction == null) {
-			return;
-		}
-
-		//Action is just created - perform it
-		if (currentAction.getStatus() == ActionStatus.CREATED) {
-			currentAction.perform();
-		}
-
-		//Action not performed, wait for actor to take new one
-		if (currentAction.getStatus() == ActionStatus.FAILED) {
-			currentAction = null;
-			return;
-		}
-
-		//Action is ongoing - tick time
-		if (currentAction.getStatus() == ActionStatus.ONGOING) {
-			currentAction.act(delta);
-		}
-
-		//Action completed, continue to next actor
-		if (currentAction.getStatus() == ActionStatus.SUCCESS) {
-			currentAction = null;
-			currentActor = (currentActor + 1) % getUpdateableActors().size;
-		}
 	}
 
 	@Override
@@ -114,10 +44,42 @@ public class DungeonStage extends Stage {
 	}
 
 	/**
-	 * @return List of actors on the map: mobs, npcs, objects, player. Omits passive actors like
+	 * @return List of actors on the map: mobs, npcs, objects, player. Omits passive actors like tiles.
 	 */
-	private SnapshotArray<Actor> getUpdateableActors() {
+	public SnapshotArray<Actor> getUpdateableActors() {
 		return objectsLayer.getChildren();
+	}
+
+	private void generateMap() {
+		map = new StandardDungeonMap(80, 50);
+		map.generate(new StandardDungeonMap.Params(4, 4, 3, 8, 3, 8));
+	}
+
+	private void initializeMapView() {
+		mapLayer = new MapLayer(map, new DungeonTileset());
+		addActor(mapLayer);
+	}
+
+	private void initializeObjectsView() {
+		objectsLayer = new Layer();
+		addActor(objectsLayer);
+		putPlayer();
+	}
+
+	private void putPlayer() {
+		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
+		objectsLayer.addActor(Butcher.getPlayer());
+	}
+
+	private void createFovCalculator() {
+		fov = new Fov(map.getGrid(), new Fov.LevelApplier() {
+			@Override
+			public void apply(Coord coord, float fovLevel) {
+				Actor tile = mapLayer.getTile(coord);
+				Color c = tile.getColor();
+				tile.setColor(c.r, c.g, c.b, fovLevel);
+			}
+		});
 	}
 
 }

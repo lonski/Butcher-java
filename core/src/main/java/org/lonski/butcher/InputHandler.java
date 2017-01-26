@@ -9,6 +9,24 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import squidpony.squidmath.Coord;
 
 public class InputHandler implements InputProcessor {
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		Coord coord = screenPositionToOrtho(screenX, screenY);
+		Coord playerCoord = Butcher.getPlayer().getPositionOrtho();
+
+		Butcher.getPlayer().setNextAction(new MoveAction(coord.subtract(playerCoord)));
+
+		return true;
+	}
+
+	private Coord screenPositionToOrtho(int x, int y) {
+		Stage stage = Butcher.getDungeonStage();
+		Vector2 position = stage.screenToStageCoordinates(new Vector2((float) x, (float) y));
+		position.sub(Butcher.TILE_SIZE / 2.f, Butcher.TILE_SIZE / 2.f);
+		return Butcher.positionToOrtho(position);
+	}
+
 	@Override
 	public boolean keyDown(int keycode) {
 		return false;
@@ -22,16 +40,6 @@ public class InputHandler implements InputProcessor {
 	@Override
 	public boolean keyTyped(char character) {
 		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Coord coord = screenPositionToOrtho(screenX, screenY);
-		Coord playerCoord = Butcher.getPlayer().getPositionOrtho();
-
-		Butcher.getPlayer().setNextAction(new MoveAction(coord.subtract(playerCoord)));
-
-		return true;
 	}
 
 	@Override
@@ -52,13 +60,6 @@ public class InputHandler implements InputProcessor {
 	@Override
 	public boolean scrolled(int amount) {
 		return false;
-	}
-
-	private Coord screenPositionToOrtho(int x, int y) {
-		Stage stage = Butcher.getDungeonStage();
-		Vector2 position = stage.screenToStageCoordinates(new Vector2((float) x, (float) y));
-		position.sub(Butcher.TILE_SIZE / 2.f, Butcher.TILE_SIZE / 2.f);
-		return Butcher.positionToOrtho(position);
 	}
 
 }

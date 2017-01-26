@@ -17,7 +17,7 @@ import squidpony.squidmath.Coord;
 public class FovTest {
 
 	@Mock
-	private FovLevelApplier fovLevelApplier;
+	private Fov.LevelApplier fovLevelApplier;
 
 	@Test
 	public void shouldApplyFovLevel() {
