@@ -6,10 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-public class Player extends AdaptedActor {
+public class Cow extends Monster{
 
-	public Player() {
-		super(new Texture(Gdx.files.internal("actors/player.png")));
+	public Cow() {
+		super(new Texture(Gdx.files.internal("actors/cow.png")));
 	}
 
 	@Override

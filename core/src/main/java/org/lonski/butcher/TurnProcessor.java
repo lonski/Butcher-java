@@ -1,6 +1,7 @@
 package org.lonski.butcher;
 
 import org.lonski.butcher.actors.AdaptedActor;
+import org.lonski.butcher.actors.Player;
 import org.lonski.butcher.actors.actions.ActionStatus;
 import org.lonski.butcher.actors.actions.AdaptedAction;
 
@@ -31,6 +32,14 @@ class TurnProcessor {
 	}
 
 	void update(float delta) {
+		int actorIndex;
+		do {
+			actorIndex = getCurrentActor();
+			process(delta);
+		} while (getCurrentActor() != actorIndex);
+	}
+
+	private void process(float delta) {
 		Array<Actor> actors = gateway.getActors();
 
 		//Fetch actor currently taking its turn
@@ -41,6 +50,7 @@ class TurnProcessor {
 
 		// Fetch actor's action
 		if (currentAction == null) {
+			actor.takeTurn();
 			currentAction = actor.getNextAction();
 		}
 
@@ -57,6 +67,7 @@ class TurnProcessor {
 		//Action not performed, wait for actor to take new one
 		if (currentAction.getStatus() == ActionStatus.FAILED) {
 			currentAction = null;
+			currentActor = (currentActor + 1) % actors.size;
 			return;
 		}
 
@@ -69,6 +80,10 @@ class TurnProcessor {
 		if (currentAction.getStatus() == ActionStatus.SUCCESS) {
 			currentAction = null;
 			currentActor = (currentActor + 1) % actors.size;
+
+			if ( actor instanceof Player ){
+				Butcher.getDungeonStage().calculateFov();
+			}
 		} else if (currentAction.getStatus() == ActionStatus.FAILED) {
 			currentAction = null;
 		}

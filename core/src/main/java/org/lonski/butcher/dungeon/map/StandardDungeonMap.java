@@ -55,6 +55,9 @@ public class StandardDungeonMap implements DungeonMap {
 
 	@Override
 	public char getTileChar(Coord coord) {
+		if ( coord.getX() >= getWidth() || coord.getY() >= getHeight() )
+			return DungeonMapSymbol.WALL;
+
 		return generator.getDungeon()[coord.getX()][coord.getY()];
 	}
 

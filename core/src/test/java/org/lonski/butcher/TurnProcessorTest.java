@@ -164,6 +164,18 @@ public class TurnProcessorTest {
 		assertThat(processor.getCurrentAction()).isNull();
 	}
 
+	@Test
+	public void shouldTakeTurnIfNoCurrentAction() {
+		TurnProcessor processor = new TurnProcessor(actorsGateway);
+		when(actorsGateway.getActors()).thenReturn(actorArray);
+		when(actorArray.get(anyInt())).thenReturn(actor);
+		when(actor.getNextAction()).thenReturn(null);
+
+		processor.update(1);
+
+		verify(actor).takeTurn();
+	}
+
 	private void happyPathMockSetting() {
 		when(actorsGateway.getActors()).thenReturn(actorArray);
 		when(actorArray.get(anyInt())).thenReturn(actor);

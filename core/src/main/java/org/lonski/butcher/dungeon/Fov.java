@@ -19,6 +19,7 @@ class Fov {
 
 	private FOV calculator;
 	private Coord lastFovPoint;
+	private double[][] fovMap;
 
 	Fov(char[][] map, LevelApplier fovLevelApplier) {
 		this.map = map;
@@ -30,7 +31,7 @@ class Fov {
 	void calculate(Coord center) {
 		if (!center.equals(lastFovPoint)) {
 
-			double[][] fovMap = calculator.calculateFOV(DungeonUtility.generateResistances(map),
+			fovMap = calculator.calculateFOV(DungeonUtility.generateResistances(map),
 					center.getX(), center.getY(), 8);
 
 			for (int x = 0; x < fovMap.length; x++) {
@@ -42,5 +43,12 @@ class Fov {
 
 			lastFovPoint = center;
 		}
+	}
+
+	public double getFovLevel(Coord coord){
+		if ( coord.getX() >= fovMap.length || coord.getY() >= fovMap[0].length )
+			return 0.0;
+
+		return fovMap[coord.getX()][coord.getY()];
 	}
 }

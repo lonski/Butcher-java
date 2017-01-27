@@ -27,6 +27,6 @@ public class StandardDungeonMapTest {
 	}
 
 	private StandardDungeonMap.Params getParams() {
-		return new StandardDungeonMap.Params(4, 4, 3, 8, 3, 8);
+		return new StandardDungeonMap.Params(4, 3, 3, 8, 3, 8);
 	}
 }

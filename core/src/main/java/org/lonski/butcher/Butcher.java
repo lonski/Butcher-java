@@ -1,6 +1,7 @@
 package org.lonski.butcher;
 
 import org.lonski.butcher.actors.Player;
+import org.lonski.butcher.common.Profiler;
 import org.lonski.butcher.dungeon.DungeonStage;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -18,7 +19,7 @@ import squidpony.squidmath.Coord;
 public class Butcher extends ApplicationAdapter {
 
 	public static final float TILE_SIZE = 64.f;
-	public static final float ANIMATION_DURATION = 0.15f;
+	public static final float ANIMATION_DURATION = 0.10f;
 
 	private static Player player;
 	private static DungeonStage dungeon;
@@ -53,11 +54,13 @@ public class Butcher extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		Profiler p = new Profiler().start(false);
 		turnProcessor.update(Gdx.graphics.getDeltaTime());
+		p.logFromStartNonZero("update");
 
 		camera.position.set(player.getX() - TILE_SIZE / 2, player.getY() - TILE_SIZE / 2, 0);
 		batch.setProjectionMatrix(camera.combined);
-		
+
 		dungeon.draw();
 	}
 
