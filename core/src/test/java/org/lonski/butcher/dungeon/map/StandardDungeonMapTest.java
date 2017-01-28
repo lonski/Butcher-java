@@ -9,7 +9,6 @@ public class StandardDungeonMapTest {
 	@Test
 	public void shouldGenerateDungeon() {
 		StandardDungeonMap map = new StandardDungeonMap(80, 40);
-
 		map.generate(getParams());
 
 		System.out.println(map);
@@ -23,10 +22,10 @@ public class StandardDungeonMapTest {
 
 		map.generate(getParams());
 
-		assertThat(map.getTileChar(10,30)).isNotEqualTo(' ');
+		assertThat(map.getTileChar(10, 30)).isNotEqualTo(' ');
 	}
 
 	private StandardDungeonMap.Params getParams() {
-		return new StandardDungeonMap.Params(4, 3, 3, 8, 3, 8);
+		return new StandardDungeonMap.Params(6, 6, 2, 4, 2, 4);
 	}
 }

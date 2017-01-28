@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import squidpony.squidai.DijkstraMap;
 import squidpony.squidmath.Coord;
 
 public class DungeonStage extends Stage {
@@ -26,7 +25,6 @@ public class DungeonStage extends Stage {
 	private Fov fov;
 	private MapLayer mapLayer;
 	private Layer objectsLayer;
-	private DijkstraMap dijkstraMap;
 
 	public DungeonStage(Viewport viewport, Batch batch) {
 		super(viewport, batch);
@@ -35,12 +33,10 @@ public class DungeonStage extends Stage {
 		initializeObjectsView();
 		createFovCalculator();
 		calculateFov();
-		this.dijkstraMap = new DijkstraMap(map.getGrid(), DijkstraMap.Measurement.CHEBYSHEV);
 	}
 
-	public DijkstraMap getPathfindingMap() {
-		dijkstraMap.reset();
-		return dijkstraMap;
+	public char[][] getMapGrid() {
+		return map.getGrid();
 	}
 
 	public boolean isInFov(Coord coord) {
@@ -83,7 +79,7 @@ public class DungeonStage extends Stage {
 
 	private void generateMap() {
 		map = new StandardDungeonMap(80, 50);
-		map.generate(new StandardDungeonMap.Params(4, 3, 3, 8, 3, 8));
+		map.generate(new StandardDungeonMap.Params(6, 6, 3, 5, 3, 5));
 	}
 
 	private void initializeMapView() {
@@ -99,7 +95,7 @@ public class DungeonStage extends Stage {
 	}
 
 	private void putCows() {
-		for (int n = 0; n < 20; n++) {
+		for (int n = 0; n < 5; n++) {
 			Cow cow = new Cow();
 			Coord pos = map.getRandomFloor();
 			if (!isBlocked(pos)) {
@@ -120,7 +116,12 @@ public class DungeonStage extends Stage {
 			public void apply(Coord coord, float fovLevel) {
 				Actor tile = mapLayer.getTile(coord);
 				Color c = tile.getColor();
-				tile.setColor(c.r, c.g, c.b, fovLevel);
+				if (fovLevel < 0.01) {
+					tile.setVisible(false);
+				} else {
+					tile.setColor(c.r, c.g, c.b, fovLevel);
+					tile.setVisible(true);
+				}
 			}
 		});
 	}

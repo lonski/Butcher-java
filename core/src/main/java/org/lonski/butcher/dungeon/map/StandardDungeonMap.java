@@ -35,7 +35,16 @@ public class StandardDungeonMap implements DungeonMap {
 				rng);
 
 		generator.addDoors(30, false);
-		generator.generate(rogueGen.generate());
+		runGenerateUntilSuccess(rogueGen);
+	}
+
+	private void runGenerateUntilSuccess(ClassicRogueMapGenerator rogueGen) {
+		try {
+			generator.generate(rogueGen.generate());
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Regenerating map..");
+			runGenerateUntilSuccess(rogueGen);
+		}
 	}
 
 	@Override
@@ -55,8 +64,9 @@ public class StandardDungeonMap implements DungeonMap {
 
 	@Override
 	public char getTileChar(Coord coord) {
-		if ( coord.getX() >= getWidth() || coord.getY() >= getHeight() )
+		if (coord.getX() >= getWidth() || coord.getY() >= getHeight()) {
 			return DungeonMapSymbol.WALL;
+		}
 
 		return generator.getDungeon()[coord.getX()][coord.getY()];
 	}

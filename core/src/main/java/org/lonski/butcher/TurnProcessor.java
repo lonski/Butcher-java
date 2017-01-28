@@ -43,7 +43,7 @@ class TurnProcessor {
 		Array<Actor> actors = gateway.getActors();
 
 		//Fetch actor currently taking its turn
-		AdaptedActor actor = (AdaptedActor) actors.get(currentActor);
+		final AdaptedActor actor = (AdaptedActor) actors.get(currentActor);
 		if (actor == null) {
 			return;
 		}
@@ -81,7 +81,7 @@ class TurnProcessor {
 			currentAction = null;
 			currentActor = (currentActor + 1) % actors.size;
 
-			if ( actor instanceof Player ){
+			if (actor instanceof Player) {
 				Butcher.getDungeonStage().calculateFov();
 			}
 		} else if (currentAction.getStatus() == ActionStatus.FAILED) {

@@ -1,11 +1,11 @@
 package org.lonski.butcher;
 
 import org.lonski.butcher.actors.Player;
-import org.lonski.butcher.common.Profiler;
 import org.lonski.butcher.dungeon.DungeonStage;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,15 +19,21 @@ import squidpony.squidmath.Coord;
 public class Butcher extends ApplicationAdapter {
 
 	public static final float TILE_SIZE = 64.f;
-	public static final float ANIMATION_DURATION = 0.10f;
+	public static final float ANIMATION_DURATION = 0.08f;
 
 	private static Player player;
 	private static DungeonStage dungeon;
+
+	private final FPSLogger fpsLogger;
 
 	private OrthographicCamera camera;
 	private FitViewport viewport;
 	private SpriteBatch batch;
 	private TurnProcessor turnProcessor;
+
+	public Butcher() {
+		fpsLogger = new FPSLogger();
+	}
 
 	@Override
 	public void create() {
@@ -54,14 +60,13 @@ public class Butcher extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		Profiler p = new Profiler().start(false);
 		turnProcessor.update(Gdx.graphics.getDeltaTime());
-		p.logFromStartNonZero("update");
 
 		camera.position.set(player.getX() - TILE_SIZE / 2, player.getY() - TILE_SIZE / 2, 0);
 		batch.setProjectionMatrix(camera.combined);
 
 		dungeon.draw();
+		fpsLogger.log();
 	}
 
 	@Override
