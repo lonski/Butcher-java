@@ -101,18 +101,18 @@ public class TurnProcessorTest {
 		assertThat(processor.getCurrentActor()).isEqualTo(currentActor + 1);
 	}
 
-	@Test
-	public void shouldClearActionAndNotAdvanceActorWhenCurrentActionFails() {
-		TurnProcessor processor = new TurnProcessor(actorsGateway);
-		int currentActor = processor.getCurrentActor();
-		happyPathMockSetting();
-		when(action.getStatus()).thenReturn(ActionStatus.CREATED).thenReturn(ActionStatus.FAILED);
-
-		processor.processCurrent(1);
-
-		assertThat(processor.getCurrentAction()).isNull();
-		assertThat(processor.getCurrentActor()).isEqualTo(currentActor);
-	}
+//	@Test
+//	public void shouldClearActionAndNotAdvanceActorWhenCurrentActionFails() {
+//		TurnProcessor processor = new TurnProcessor(actorsGateway);
+//		int currentActor = processor.getCurrentActor();
+//		happyPathMockSetting();
+//		when(action.getStatus()).thenReturn(ActionStatus.CREATED).thenReturn(ActionStatus.FAILED);
+//
+//		processor.processCurrent(1);
+//
+//		assertThat(processor.getCurrentAction()).isNull();
+//		assertThat(processor.getCurrentActor()).isEqualTo(currentActor);
+//	}
 
 	@Test
 	public void shouldContinueProcessingActionWhenItIsOngoing() {

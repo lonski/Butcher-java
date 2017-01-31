@@ -1,4 +1,4 @@
-package org.lonski.butcher.dungeon;
+package org.lonski.butcher.dungeon.map;
 
 import java.util.HashMap;
 

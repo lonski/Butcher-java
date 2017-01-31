@@ -5,10 +5,11 @@ import org.lonski.butcher.actors.AdaptedActor;
 import org.lonski.butcher.actors.Cow;
 import org.lonski.butcher.dungeon.layers.MapLayer;
 import org.lonski.butcher.dungeon.layers.ObjectsLayer;
-import org.lonski.butcher.dungeon.map.DungeonMap;
-import org.lonski.butcher.dungeon.map.DungeonMapSymbol;
-import org.lonski.butcher.dungeon.map.StandardDungeonMap;
+import org.lonski.butcher.dungeon.map.*;
+import org.lonski.butcher.dungeon.map.generators.DungeonMapGenerator;
+import org.lonski.butcher.dungeon.map.generators.StandardDungeonMapGenerator;
 import org.lonski.butcher.dungeon.tilesets.DungeonTileset;
+import org.lonski.butcher.dungeon.map.Pathfinder;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -25,7 +26,6 @@ public class DungeonStage extends Stage {
 	private Fov fov;
 	private MapLayer mapLayer;
 	private ObjectsLayer objectsLayer;
-	private Pathfinder pathfinder;
 
 	public DungeonStage(Viewport viewport, Batch batch) {
 		super(viewport, batch);
@@ -34,11 +34,10 @@ public class DungeonStage extends Stage {
 		initializeObjectsView();
 		createFovCalculator();
 		calculateFov();
-		pathfinder = new Pathfinder(map.getGrid());
 	}
 
 	public Pathfinder getPathfinder() {
-		return pathfinder;
+		return map.getPathfinder();
 	}
 
 	public boolean isInFov(Coord coord) {
@@ -80,8 +79,8 @@ public class DungeonStage extends Stage {
 	}
 
 	private void generateMap() {
-		map = new StandardDungeonMap(80, 50);
-		map.generate(new StandardDungeonMap.Params(6, 6, 3, 5, 3, 5));
+		DungeonMapGenerator generator = new StandardDungeonMapGenerator(80, 50);
+		map = generator.generate(new StandardDungeonMapGenerator.Params(6, 6, 3, 5, 3, 5));
 	}
 
 	private void initializeMapView() {

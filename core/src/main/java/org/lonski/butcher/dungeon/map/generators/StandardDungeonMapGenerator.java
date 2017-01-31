@@ -1,18 +1,19 @@
-package org.lonski.butcher.dungeon.map;
+package org.lonski.butcher.dungeon.map.generators;
+
+import org.lonski.butcher.dungeon.map.DungeonMap;
 
 import squidpony.squidgrid.mapping.ClassicRogueMapGenerator;
 import squidpony.squidgrid.mapping.DungeonGenerator;
-import squidpony.squidmath.Coord;
 import squidpony.squidmath.RNG;
 
-public class StandardDungeonMap implements DungeonMap {
+public class StandardDungeonMapGenerator implements DungeonMapGenerator {
 
 	private int height;
 	private int width;
 	private DungeonGenerator generator;
 	private RNG rng;
 
-	public StandardDungeonMap(int width, int height) {
+	public StandardDungeonMapGenerator(int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.rng = new RNG(System.currentTimeMillis());
@@ -20,7 +21,7 @@ public class StandardDungeonMap implements DungeonMap {
 	}
 
 	@Override
-	public void generate(DungeonMapParameters parameters) {
+	public DungeonMap generate(DungeonMapParameters parameters) {
 		Params params = (Params) parameters;
 
 		if (params == null) {
@@ -36,6 +37,8 @@ public class StandardDungeonMap implements DungeonMap {
 
 		generator.addDoors(30, false);
 		runGenerateUntilSuccess(rogueGen);
+
+		return new DungeonMap(generator.getDungeon());
 	}
 
 	private void runGenerateUntilSuccess(ClassicRogueMapGenerator rogueGen) {
@@ -45,45 +48,6 @@ public class StandardDungeonMap implements DungeonMap {
 			System.out.println("Regenerating map..");
 			runGenerateUntilSuccess(rogueGen);
 		}
-	}
-
-	@Override
-	public String toString() {
-		return generator.toString();
-	}
-
-	@Override
-	public int getHeight() {
-		return height;
-	}
-
-	@Override
-	public char getTileChar(int x, int y) {
-		return generator.getDungeon()[x][y];
-	}
-
-	@Override
-	public char getTileChar(Coord coord) {
-		if (coord.getX() >= getWidth() || coord.getY() >= getHeight()) {
-			return DungeonMapSymbol.WALL;
-		}
-
-		return generator.getDungeon()[coord.getX()][coord.getY()];
-	}
-
-	@Override
-	public Coord getRandomFloor() {
-		return generator.utility.randomFloor(generator.getBareDungeon());
-	}
-
-	@Override
-	public char[][] getGrid() {
-		return generator.getDungeon();
-	}
-
-	@Override
-	public int getWidth() {
-		return width;
 	}
 
 	public static class Params implements DungeonMapParameters {

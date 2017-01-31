@@ -3,13 +3,14 @@ package org.lonski.butcher.dungeon.map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
+import org.lonski.butcher.dungeon.map.generators.StandardDungeonMapGenerator;
 
 public class StandardDungeonMapTest {
 
 	@Test
 	public void shouldGenerateDungeon() {
-		StandardDungeonMap map = new StandardDungeonMap(80, 40);
-		map.generate(getParams());
+		StandardDungeonMapGenerator generator = new StandardDungeonMapGenerator(80, 40);
+		DungeonMap map = generator.generate(getParams());
 
 		System.out.println(map);
 		assertThat(map.toString()).isNotNull();
@@ -18,14 +19,15 @@ public class StandardDungeonMapTest {
 
 	@Test
 	public void shouldReturnTile() {
-		StandardDungeonMap map = new StandardDungeonMap(80, 40);
+		StandardDungeonMapGenerator
+				generator = new StandardDungeonMapGenerator(80, 40);
 
-		map.generate(getParams());
+		DungeonMap map = generator.generate(getParams());
 
 		assertThat(map.getTileChar(10, 30)).isNotEqualTo(' ');
 	}
 
-	private StandardDungeonMap.Params getParams() {
-		return new StandardDungeonMap.Params(6, 6, 2, 4, 2, 4);
+	private StandardDungeonMapGenerator.Params getParams() {
+		return new StandardDungeonMapGenerator.Params(6, 6, 2, 4, 2, 4);
 	}
 }
