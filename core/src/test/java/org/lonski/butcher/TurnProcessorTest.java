@@ -49,7 +49,7 @@ public class TurnProcessorTest {
 		when(actorsGateway.getActors()).thenReturn(actorArray);
 		when(actorArray.get(anyInt())).thenReturn(null);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(actorsGateway).getActors();
 	}
@@ -60,7 +60,7 @@ public class TurnProcessorTest {
 		when(actorsGateway.getActors()).thenReturn(actorArray);
 		when(actorArray.get(anyInt())).thenReturn(null);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		assertThat(processor.getCurrentActor()).isEqualTo(0);
 	}
@@ -72,7 +72,7 @@ public class TurnProcessorTest {
 		when(actorArray.get(anyInt())).thenReturn(actor);
 		when(actor.getNextAction()).thenReturn(null);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(actor).getNextAction();
 	}
@@ -82,7 +82,7 @@ public class TurnProcessorTest {
 		TurnProcessor processor = new TurnProcessor(actorsGateway);
 		happyPathMockSetting();
 		when(action.getStatus()).thenReturn(ActionStatus.CREATED);
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(action).perform();
 		assertThat(processor.getCurrentAction()).isNotNull();
@@ -95,7 +95,7 @@ public class TurnProcessorTest {
 		happyPathMockSetting();
 		when(action.getStatus()).thenReturn(ActionStatus.CREATED).thenReturn(ActionStatus.SUCCESS);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		assertThat(processor.getCurrentAction()).isNull();
 		assertThat(processor.getCurrentActor()).isEqualTo(currentActor + 1);
@@ -108,7 +108,7 @@ public class TurnProcessorTest {
 		happyPathMockSetting();
 		when(action.getStatus()).thenReturn(ActionStatus.CREATED).thenReturn(ActionStatus.FAILED);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		assertThat(processor.getCurrentAction()).isNull();
 		assertThat(processor.getCurrentActor()).isEqualTo(currentActor);
@@ -121,7 +121,7 @@ public class TurnProcessorTest {
 		happyPathMockSetting();
 		when(action.getStatus()).thenReturn(ActionStatus.CREATED).thenReturn(ActionStatus.ONGOING);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(action).act(anyFloat());
 		assertThat(processor.getCurrentAction()).isNotNull();
@@ -139,7 +139,7 @@ public class TurnProcessorTest {
 				.thenReturn(ActionStatus.ONGOING)
 				.thenReturn(ActionStatus.SUCCESS);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(action).act(anyFloat());
 		assertThat(processor.getCurrentAction()).isNull();
@@ -157,7 +157,7 @@ public class TurnProcessorTest {
 				.thenReturn(ActionStatus.ONGOING)
 				.thenReturn(ActionStatus.FAILED);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(action).act(anyFloat());
 		assertThat(processor.getCurrentActor()).isEqualTo(currentActor);
@@ -171,7 +171,7 @@ public class TurnProcessorTest {
 		when(actorArray.get(anyInt())).thenReturn(actor);
 		when(actor.getNextAction()).thenReturn(null);
 
-		processor.update(1);
+		processor.processCurrent(1);
 
 		verify(actor).takeTurn();
 	}

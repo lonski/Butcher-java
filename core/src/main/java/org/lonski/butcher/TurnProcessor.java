@@ -35,11 +35,11 @@ class TurnProcessor {
 		int actorIndex;
 		do {
 			actorIndex = getCurrentActor();
-			process(delta);
+			processCurrent(delta);
 		} while (getCurrentActor() != actorIndex);
 	}
 
-	private void process(float delta) {
+	public void processCurrent(float delta) {
 		Array<Actor> actors = gateway.getActors();
 
 		//Fetch actor currently taking its turn
@@ -64,10 +64,10 @@ class TurnProcessor {
 			currentAction.perform();
 		}
 
-		//Action not performed, wait for actor to take new one
+		//Action failed, wait for actor to take new one
 		if (currentAction.getStatus() == ActionStatus.FAILED) {
 			currentAction = null;
-			currentActor = (currentActor + 1) % actors.size;
+			currentActor = (currentActor + 1) % actors.size; //TODO: temporary until AI improved
 			return;
 		}
 

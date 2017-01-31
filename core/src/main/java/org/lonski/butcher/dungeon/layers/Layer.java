@@ -1,4 +1,4 @@
-package org.lonski.butcher.common;
+package org.lonski.butcher.dungeon.layers;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 

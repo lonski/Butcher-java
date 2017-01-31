@@ -3,8 +3,8 @@ package org.lonski.butcher.dungeon;
 import org.lonski.butcher.Butcher;
 import org.lonski.butcher.actors.AdaptedActor;
 import org.lonski.butcher.actors.Cow;
-import org.lonski.butcher.common.Layer;
 import org.lonski.butcher.dungeon.layers.MapLayer;
+import org.lonski.butcher.dungeon.layers.ObjectsLayer;
 import org.lonski.butcher.dungeon.map.DungeonMap;
 import org.lonski.butcher.dungeon.map.DungeonMapSymbol;
 import org.lonski.butcher.dungeon.map.StandardDungeonMap;
@@ -24,7 +24,8 @@ public class DungeonStage extends Stage {
 	private DungeonMap map;
 	private Fov fov;
 	private MapLayer mapLayer;
-	private Layer objectsLayer;
+	private ObjectsLayer objectsLayer;
+	private Pathfinder pathfinder;
 
 	public DungeonStage(Viewport viewport, Batch batch) {
 		super(viewport, batch);
@@ -33,10 +34,11 @@ public class DungeonStage extends Stage {
 		initializeObjectsView();
 		createFovCalculator();
 		calculateFov();
+		pathfinder = new Pathfinder(map.getGrid());
 	}
 
-	public char[][] getMapGrid() {
-		return map.getGrid();
+	public Pathfinder getPathfinder() {
+		return pathfinder;
 	}
 
 	public boolean isInFov(Coord coord) {
@@ -88,10 +90,15 @@ public class DungeonStage extends Stage {
 	}
 
 	private void initializeObjectsView() {
-		objectsLayer = new Layer();
+		objectsLayer = new ObjectsLayer();
 		addActor(objectsLayer);
 		putPlayer();
 		putCows();
+	}
+
+	private void putPlayer() {
+		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
+		objectsLayer.addActor(Butcher.getPlayer());
 	}
 
 	private void putCows() {
@@ -103,11 +110,6 @@ public class DungeonStage extends Stage {
 				objectsLayer.addActor(cow);
 			}
 		}
-	}
-
-	private void putPlayer() {
-		Butcher.getPlayer().setPositionOrtho(map.getRandomFloor());
-		objectsLayer.addActor(Butcher.getPlayer());
 	}
 
 	private void createFovCalculator() {

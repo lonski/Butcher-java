@@ -41,9 +41,9 @@ public class Butcher extends ApplicationAdapter {
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
+		batch = new SpriteBatch();
 		player = new Player();
 
-		batch = new SpriteBatch();
 		dungeon = new DungeonStage(viewport, batch);
 		turnProcessor = new TurnProcessor(new TurnProcessor.ActorsGateway() {
 			@Override

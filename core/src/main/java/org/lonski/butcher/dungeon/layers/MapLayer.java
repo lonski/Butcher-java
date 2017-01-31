@@ -2,7 +2,6 @@ package org.lonski.butcher.dungeon.layers;
 
 import org.lonski.butcher.Butcher;
 import org.lonski.butcher.actors.Tile;
-import org.lonski.butcher.common.Layer;
 import org.lonski.butcher.dungeon.map.DungeonMap;
 import org.lonski.butcher.dungeon.tilesets.Tileset;
 
