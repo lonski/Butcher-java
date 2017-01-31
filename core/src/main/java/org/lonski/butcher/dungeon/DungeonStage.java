@@ -41,7 +41,7 @@ public class DungeonStage extends Stage {
 	}
 
 	public boolean isInFov(Coord coord) {
-		return getFovLevel(coord) > 0.001;
+		return getFovLevel(coord) > 0.1;
 	}
 
 	public double getFovLevel(Coord coord) {
@@ -84,7 +84,7 @@ public class DungeonStage extends Stage {
 	}
 
 	private void initializeMapView() {
-		mapLayer = new MapLayer(map, new DungeonTileset());
+		mapLayer = new MapLayer(map, new DungeonTileset(), false);
 		addActor(mapLayer);
 	}
 
@@ -117,8 +117,8 @@ public class DungeonStage extends Stage {
 			public void apply(Coord coord, float fovLevel) {
 				Actor tile = mapLayer.getTile(coord);
 				Color c = tile.getColor();
-				if (fovLevel < 0.01) {
-					tile.setVisible(false);
+				if (fovLevel <= 0.1) {
+					tile.setColor(c.r, c.g, c.b, 0.1f);
 				} else {
 					tile.setColor(c.r, c.g, c.b, fovLevel);
 					tile.setVisible(true);

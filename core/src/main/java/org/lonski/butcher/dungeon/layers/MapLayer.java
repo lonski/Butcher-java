@@ -16,17 +16,17 @@ public class MapLayer extends Layer {
 	private final Tileset tileset;
 	private Actor[][] tiles;
 
-	public MapLayer(DungeonMap map, Tileset tileset) {
+	public MapLayer(DungeonMap map, Tileset tileset, boolean tilesVisible) {
 		this.map = map;
 		this.tileset = tileset;
-		initializeTiles();
+		initializeTiles(tilesVisible);
 	}
 
 	public Actor getTile(Coord coord) {
 		return tiles[coord.getX()][coord.getY()];
 	}
 
-	private void initializeTiles() {
+	private void initializeTiles(boolean tilesVisible) {
 		tiles = new Actor[map.getWidth()][map.getHeight()];
 
 		for (int x = 0; x < map.getWidth(); x++) {
@@ -36,6 +36,7 @@ public class MapLayer extends Layer {
 				char c = map.getTileChar(x, y);
 				Actor tile = new Tile(c, tileset.getTexture(c), pos.x, pos.y);
 
+				tile.setVisible(tilesVisible);
 				tiles[x][y] = tile;
 				addActor(tile);
 			}

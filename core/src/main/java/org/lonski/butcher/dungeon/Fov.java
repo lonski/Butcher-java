@@ -24,7 +24,7 @@ class Fov {
 	Fov(char[][] map, LevelApplier fovLevelApplier) {
 		this.map = map;
 		this.fovLevelApplier = fovLevelApplier;
-		this.calculator = new FOV(FOV.RIPPLE_LOOSE);
+		this.calculator = new FOV(FOV.RIPPLE);
 		this.lastFovPoint = Coord.get(0, 0);
 	}
 
