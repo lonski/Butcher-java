@@ -1,6 +1,7 @@
 package org.lonski.butcher;
 
 import org.lonski.butcher.actors.actions.MoveAction;
+import org.lonski.butcher.common.Direction;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +16,9 @@ public class InputHandler implements InputProcessor {
 		Coord coord = screenPositionToOrtho(screenX, screenY);
 		Coord playerCoord = Butcher.getPlayer().getPositionOrtho();
 
-		Butcher.getPlayer().setNextAction(new MoveAction(coord.subtract(playerCoord)));
+		Direction direction = Direction.fromCoords(playerCoord, coord);
+		System.out.println(direction);
+		Butcher.getPlayer().setNextAction(new MoveAction(direction));
 
 		return true;
 	}

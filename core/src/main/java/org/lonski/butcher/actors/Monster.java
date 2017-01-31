@@ -44,7 +44,7 @@ public class Monster extends AdaptedActor {
 						Queue<Coord> path = astar.path(start.getX(), start.getY(), goal.getX(), goal.getY());
 
 						if (path != null) {
-							setNextAction(new MoveAction(path.peek().subtract(getPositionOrtho())));
+							setNextAction(new MoveAction(Direction.fromCoords(getPositionOrtho(), path.peek())));
 						} else {
 							randomMove(dungeon);
 						}
@@ -60,16 +60,15 @@ public class Monster extends AdaptedActor {
 	}
 
 	private void randomMove(DungeonStage dungeon) {
-		Coord newPos = getPositionOrtho();
+		Direction direction = Direction.NONE;
 		Direction[] possibleDirections = new Direction[8];
 		rng.shuffle(Direction.OUTWARDS, possibleDirections);
 		for (Direction d : possibleDirections) {
-			Coord tmp = getPositionOrtho().add(d.toCoord());
-			if (!dungeon.isBlocked(tmp)) {
-				newPos = tmp;
+			if (!dungeon.isBlocked(getPositionOrtho().add(d.toCoord()))) {
+				direction = d;
 				break;
 			}
 		}
-		setNextAction(new MoveAction(newPos.subtract(getPositionOrtho())));
+		setNextAction(new MoveAction(direction));
 	}
 }

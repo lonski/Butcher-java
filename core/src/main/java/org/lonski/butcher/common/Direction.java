@@ -28,4 +28,18 @@ public enum Direction {
 	public Coord toCoord() {
 		return Coord.get(deltaX, deltaY);
 	}
+
+	public static Direction fromCoords(Coord from, Coord to){
+		Coord dd = to.subtract(from);
+
+		int dx = dd.getX() != 0 ? (dd.getX() / Math.abs(dd.getX())) : dd.getX();
+		int dy = dd.getY() != 0 ? (dd.getY() / Math.abs(dd.getY())) : dd.getY();
+
+		for ( Direction d : Direction.values() ){
+			if ( d.deltaX == dx && d.deltaY == dy )
+				return d;
+		}
+
+		return NONE;
+	}
 }
